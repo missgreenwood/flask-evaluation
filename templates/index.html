@@ -1,30 +1,36 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-	  <title>My BUZZN App</title>
-	  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	  <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-	  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-	  <script type="text/javascript" charset="utf-8">
-		  $(document).ready(function() {
-			  namespace = '/mybuzzn';
-			  var socket = io(namespace);
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>My BUZZN</title>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            // Use a "/test" namespace.
+            namespace = '/test';
 
-			  // Event handler for new connections
-			  socket.on('connect', function() {
-				  socket.emit('my_event', {data: 'I\'m connected!'});
-			  });
+            // Connect to the Socket.IO server.
+            var socket = io(namespace);
 
-			  // Event handler for server-sent data
-			  socket.on('my_response', function(msg) {
-				  $('#log').append('<br>' + $('<div/>').text('Received: ' + msg.data).html());
-			  });
-		  });
-	  </script>
-  </head>
-  <body>
-	  <h1>Welcome to My BUZZN!</h1>
-	  <h2>Receive data from WebSocket:</h2>
-	  <div id="log"></div>
-  </body>
-  </html>
+            // Event handler for new connections.
+            socket.on('connect', function() {
+                socket.emit('my_event', {data: 'I\'m connected!'});
+            });
+
+            // Event handler for server sent data.
+            // The callback function is invoked whenever the server emits data
+            // to the client. The data is then displayed in the "Received"
+            // section of the page.
+            socket.on('my_response', function(msg, cb) {
+                $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+                if (cb)
+                    cb();
+            });
+    </script>
+</head>
+<body>
+    <h1>Welcome to My BUZZN!</h1>
+    <h2>Received server data:</h2>
+    <div id="log"></div>
+</body>
+</html>
