@@ -42,10 +42,6 @@
                 socket.emit('my_event', {data: $('#emit_data').val()});
                 return false;
             });
-            $('form#disconnect').submit(function(event) {
-                socket.emit('disconnect_request');
-                return false;
-            });
         });
     </script>
 </head>
