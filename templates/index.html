@@ -1,0 +1,43 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+	  <title>My BUZZN App</title>
+	  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	  <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+	  <script type="text/javascript" charset="utf-8">
+		  $(document).ready(function() {
+			  namespace = '/mybuzzn';
+			  var socket = io(namespace);
+
+			  // Event handler for new connections
+			  socket.on('connect', function() {
+				  socket.emit('my_event', {data: 'I\'m connected!'});
+			  });
+
+			  // Event handler for server-sent data
+			  socket.on('my_response', function(msg, cb) {
+				  $('#log').append('<br>' + $('<div/>').text('Received: ' + msg.data).html());
+				  if (cb)
+					  cb();
+			  });
+
+			  // Event handler for user input
+			  $('form#emit').submit(function(event) {
+				  socket.emit('disconnect_request');
+				  return false; 
+			  });
+		  });
+	  </script>
+  </head>
+  <body>
+	  <h1>Welcome to My BUZZN!</h1>
+	  <h2>Live data via  WebSocket:</h2>
+	  <form id="emit" method="POST" action='#'>
+		  <input type="text" name="emit_data" id="emit_data">
+		  <input type="submit" value="Echo">
+	  </form>
+	  <h2>Receive:</h2>
+	  <div id="log"></div>
+  </body>
+  </html>
