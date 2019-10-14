@@ -19,7 +19,7 @@ thread_lock = Lock()
 
 
 def generate_live_data():
-    date = (datetime.utcnow().replace(tzinfo=pytz.utc)).strftime("%Y-%M-%d %H:%M:%S%z")
+    date = (datetime.utcnow().replace(tzinfo=pytz.utc)).strftime("%Y-%m-%d %H:%M:%S%z")
     userConsumption = random.randint(0, 4000)
     groupConsumption = random.randint(0, 50000)
     selfSufficiency = random.randint(0, 101)
