@@ -21,6 +21,4 @@ http://127.0.0.1:5000
 ```
 
 ## Acknowledgements
-* [Flask vs. Django: Why Flask Might Be Better](https://www.codementor.io/garethdwyer/flask-vs-django-why-flask-might-be-better-4xs7mdf8v)
-* [flask-chat-app-article](https://github.com/samhita-alla/flask-chat-app-article)
 * [Flask-SocketIO/example](https://github.com/miguelgrinberg/Flask-SocketIO/tree/master/example)
