@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
     <title>My BUZZN</title>
     <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -22,7 +23,9 @@
             // The callback function is invoked when a connection with the
             // server is established.
             socket.on('connect', function() {
-                socket.emit('my_event', {data: 'I\'m connected!'});
+                socket.emit('my_event', {
+                    data: 'I\'m connected!'
+                });
             });
 
             // Event handler for server sent data.
@@ -34,12 +37,23 @@
                 if (cb)
                     cb();
             });
+
+            // Handlers for the login form form in the page. 
+            // Accept data from the user and sends it to the server.
         });
     </script>
 </head>
+
 <body>
     <h1>Welcome to My BUZZN!</h1>
-    <h2>WebSocket data from server:</h2>
+    <h2>Login</h2>
+    <form id="emit" method="POST" action='#'>
+        <input type="text" name="username" id="username" placeholder="username">
+	<input type="text" name="password" id="password" placeholder="password">
+	<input type="submit" value="Login">
+    </form>
+    <h2>WebSocket Data from Server</h2>
     <div id="log"></div>
 </body>
+
 </html>
