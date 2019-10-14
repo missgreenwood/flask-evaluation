@@ -1,7 +1,8 @@
 import json
+import time 
 import pytz
 from numpy import random
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from threading import Lock
@@ -19,7 +20,7 @@ thread_lock = Lock()
 
 
 def generate_live_data():
-    date = (datetime.utcnow().replace(tzinfo=pytz.utc)).strftime("%Y-%m-%d %H:%M:%S%z")
+    date = datetime.now(pytz.timezone('Europe/Berlin')).strftime("%Y-%m-%d %H:%M:%S%z")
     userConsumption = random.randint(0, 4000)
     groupConsumption = random.randint(0, 50000)
     selfSufficiency = random.randint(0, 101)
