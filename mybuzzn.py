@@ -14,6 +14,9 @@ async_mode = None
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
+app.config['OAUTH2_REFRESH_TOKEN_GENERATOR'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://db.sqlite'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
