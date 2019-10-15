@@ -16,9 +16,11 @@ pip install -r "requirements.txt"
 
 ## Run 
 ```
-python mybuzzn.py
+python app.py
 http://127.0.0.1:5000
 ```
 
 ## Acknowledgements
 * [Flask-SocketIO/example](https://github.com/miguelgrinberg/Flask-SocketIO/tree/master/example)
+* [authlib/example-oauth2-server](https://github.com/authlib/example-oauth2-server)
+
