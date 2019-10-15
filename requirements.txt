@@ -1,5 +1,7 @@
 datetime
-flask
+Flask
+Flask-SQLAlchemy
+Authlib==0.12
 flask_socketio
 gevent
 numpy
