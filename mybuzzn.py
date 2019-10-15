@@ -13,10 +13,7 @@ from threading import Lock
 async_mode = None
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-app.config['OAUTH2_REFRESH_TOKEN_GENERATOR'] = True
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://db.sqlite'
+app.config['SECRET_KEY'] = 'secret'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
@@ -66,8 +63,8 @@ def background_thread():
 
 
 @app.route('/')
-def index():
-    return render_template('index.html', async_mode=socketio.async_mode)
+def home():
+    return render_template('home.html', async_mode=socketio.async_mode)
 
 
 @socketio.on('connect', namespace='/test')
