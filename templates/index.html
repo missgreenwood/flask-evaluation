@@ -47,11 +47,25 @@
 <body>
     <h1>Welcome to My BUZZN!</h1>
     <h2>Login</h2>
-    <form id="emit" method="POST" action='#'>
-        <input type="text" name="username" id="username" placeholder="username">
-	<input type="text" name="password" id="password" placeholder="password">
-	<input type="submit" value="Login">
+    {% if user %}
+    <style>pre{white-space:wrap}</style>
+    <div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+    {% for client in clients %}
+    <pre>
+    {{ client.client_info|tojson }}
+    {{ client.client_metadata|tojson }}
+    </pre>
+    <hr>
+    {% endfor %}
+
+    <br><a href="{{ url_for('.create_client') }}">Create Client</a>
+
+    {% else %}
+    <form action="" method="post">
+	    <input type="text" name="username" placeholder="username">
+	    <button type="submit">Login / Signup</button>
     </form>
+    {% endif %}
     <h2>WebSocket Data from Server</h2>
     <div id="log"></div>
 </body>
