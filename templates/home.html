@@ -1,5 +1,14 @@
 <!DOCTYPE HTML>
 <html>
+{% if user %}
+<style>pre{white-space:wrap}</style>
+<div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+{% else %}
+<form action="" method="post">
+	<input type="text" name="username" placeholder="username">
+	<button type="submit">Login / Signup</button>
+</form>
+{% endif %}
 
 <head>
     <title>My BUZZN</title>
@@ -46,26 +55,6 @@
 
 <body>
     <h1>Welcome to My BUZZN!</h1>
-    <h2>Login</h2>
-    {% if user %}
-    <style>pre{white-space:wrap}</style>
-    <div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
-    {% for client in clients %}
-    <pre>
-    {{ client.client_info|tojson }}
-    {{ client.client_metadata|tojson }}
-    </pre>
-    <hr>
-    {% endfor %}
-
-    <br><a href="{{ url_for('.create_client') }}">Create Client</a>
-
-    {% else %}
-    <form action="" method="post">
-	    <input type="text" name="username" placeholder="username">
-	    <button type="submit">Login / Signup</button>
-    </form>
-    {% endif %}
     <h2>WebSocket Data from Server</h2>
     <div id="log"></div>
 </body>
