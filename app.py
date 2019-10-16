@@ -1,25 +1,39 @@
 import json
-import time 
+import time
+import os
 import pytz
 from numpy import random
 from datetime import datetime, timezone
-from flask import Flask, render_template, Blueprint
+from flask import Flask, render_template, request, redirect, session, url_for
 from flask_socketio import SocketIO, emit
+from flask.json import jsonify
 from threading import Lock
+from requests_oauthlib import OAuth2Session
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
-
 async_mode = None
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret'
-app.config['OAUTH_REFRESH_TOKEN_GENERATOR'] = True
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
+
+def create_app(config=None):
+    app = Flask(__name__)
+    if config is not None:
+        if isinstance(config, dict):
+            app.config.update(config)
+        elif config.endswith('.py'):
+            app.config.from_pyfile(config)
+    return app
+
+app = create_app({
+    'SECRET_KEY': 'secret',
+    'OAUTH2_REFRESH_TOKEN_GENERATOR': True,
+    'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+    'SQLALCHEMY_DATABASE_URI': 'sqlite:///db.sqlite',
+})
+
+socketio = SocketIO(app, async_mode=async_mode)
 
 def generate_live_data():
     date = datetime.now(pytz.timezone('Europe/Berlin')).strftime("%Y-%m-%d %H:%M:%S%z")

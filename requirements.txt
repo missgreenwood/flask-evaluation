@@ -1,8 +1,9 @@
+Authlib==0.12
 datetime
 Flask
 Flask-SQLAlchemy
-Authlib==0.12
 flask_socketio
 gevent
 numpy
 pytz
+requests_oauthlib
