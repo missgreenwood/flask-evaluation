@@ -4,11 +4,10 @@ import os
 import pytz
 from numpy import random
 from datetime import datetime, timezone
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, url_for, request, session
 from flask_socketio import SocketIO, emit
-from flask.json import jsonify
 from threading import Lock
-from requests_oauthlib import OAuth2Session
+from models import db, User
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -17,6 +16,14 @@ async_mode = None
 thread = None
 thread_lock = Lock()
 
+
+def setup_app(app):
+    @app.before_first_request
+    def create_tables():
+        db.create_all()
+
+    db.init_app(app)
+
 def create_app(config=None):
     app = Flask(__name__)
     if config is not None:
@@ -24,6 +31,7 @@ def create_app(config=None):
             app.config.update(config)
         elif config.endswith('.py'):
             app.config.from_pyfile(config)
+    setup_app(app)
     return app
 
 app = create_app({
@@ -78,8 +86,11 @@ def background_thread():
                       namespace='/test')
 
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 def home():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        user = User.query.filter_by(username=username).first()
     return render_template('home.html', async_mode=socketio.async_mode)
 
 
