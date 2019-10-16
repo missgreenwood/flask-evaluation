@@ -4,17 +4,10 @@ import os
 import pytz
 from numpy import random
 from datetime import datetime, timezone
-from flask import Flask, render_template, url_for, request, session
+from flask import Flask, render_template, url_for, request, session, redirect
 from flask_socketio import SocketIO, emit
 from threading import Lock
 from models import db, User
-
-# Set this variable to "threading", "eventlet" or "gevent" to test the
-# different async modes, or leave it set to None for the application to choose
-# the best option based on installed packages.
-async_mode = None
-thread = None
-thread_lock = Lock()
 
 
 def setup_app(app):
@@ -41,7 +34,14 @@ app = create_app({
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///db.sqlite',
 })
 
+# Set this variable to "threading", "eventlet" or "gevent" to test the
+# different async modes, or leave it set to None for the application to choose
+# the best option based on installed packages.
+async_mode = None
+thread = None
+thread_lock = Lock()
 socketio = SocketIO(app, async_mode=async_mode)
+
 
 def generate_live_data():
     date = datetime.now(pytz.timezone('Europe/Berlin')).strftime("%Y-%m-%d %H:%M:%S%z")
@@ -86,11 +86,25 @@ def background_thread():
                       namespace='/test')
 
 
+def current_user():
+    if 'id' in session:
+        uid = session['id']
+        return User.query.get(uid)
+    return None
+
 @app.route('/', methods=('GET', 'POST'))
 def home():
     if request.method == 'POST':
         username = request.form.get('username')
         user = User.query.filter_by(username=username).first()
+        if not user: 
+            user = User(username=username)
+            db.session.add(user)
+            db.session.commit()
+        session['id'] = user.id
+        return redirect('/')
+    user = current_user()
+
     return render_template('home.html', async_mode=socketio.async_mode)
 
 
