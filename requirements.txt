@@ -1,9 +1,8 @@
-Authlib==0.12
-datetime
-Flask
-Flask-SQLAlchemy
-flask_socketio
-gevent
-numpy
 pytz
-requests_oauthlib
+numpy
+Flask
+flask_socketio
+flask-sql_alchemy
+Authlib==0.12
+gevent
+
