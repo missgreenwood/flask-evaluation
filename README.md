@@ -13,6 +13,7 @@ pip install -r "requirements.txt"
 * Python 3
 * [Flask](https://github.com/pallets/flask)
 * [Flask-SocketIO](https://github.com/miguelgrinberg/Flask-SocketIO)
+* [Authlib](https://github.com/authlib)
 
 ## Run 
 ```
