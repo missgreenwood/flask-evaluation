@@ -92,6 +92,7 @@ def current_user():
         return User.query.get(uid)
     return None
 
+
 @app.route('/', methods=('GET', 'POST'))
 def home():
     if request.method == 'POST':
@@ -104,9 +105,14 @@ def home():
         session['id'] = user.id
         return redirect('/')
     user = current_user()
+    return render_template('home.html', async_mode=socketio.async_mode,
+                           user=user)
 
-    return render_template('home.html', async_mode=socketio.async_mode)
 
+@app.route('/logout')
+def logout():
+    del session['id']
+    return redirect('/')
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
