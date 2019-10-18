@@ -2,7 +2,7 @@ pytz
 numpy
 Flask
 flask_socketio
-flask-sql_alchemy
+flask-sqlalchemy
 Authlib==0.12
 gevent
 
